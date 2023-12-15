@@ -1,36 +1,58 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
     public Transform player;
- 
+    public float timerDuration = 5f; // Adjust the timer duration as needed
+    private float timer;
+
+    private AudioManager audioManager;
+
     void Start()
     {
- 
+        audioManager = FindObjectOfType<AudioManager>();
+        timer = 0f;
     }
- 
+
     void Update()
     {
- 
-        if (Vector3.Distance(player.position, this.transform.position) < 10) //if player comes within a distance less than 10, Apex activates
+        if (Vector3.Distance(player.position, this.transform.position) < 10)
         {
             Vector3 direction = player.position - this.transform.position;
-        //right now this causes Apex to face the player with its stinger. this will be useful for the virus effected, but wasn't what I was going for
- 
-            this.transform.rotation = Quaternion.Slerp(this.transform.rotation,
-                            Quaternion.LookRotation(direction), 0.1f); //same as above note. not sure what went wrong
- 
-    if(direction.magnitude > 5)
-    {
-        this.transform.Translate(0,0,0.05f); //this is supposed to stop the chasing and make Apex sit right side up again if the player moves far enough away. so far it just stops chasing
-    }
- 
+            this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(direction), 0.1f);
+
+            if (direction.magnitude > 5)
+            {
+                this.transform.Translate(0, 0, 0.05f);
+            }
         }
- 
     }
- 
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Arm")) // Adjust the tag based on your arm object
+        {
+            // Arm touched the enemy
+            audioManager.PlayEnemyTouchSound();
+            StartTimer();
+        }
+    }
+
+    void StartTimer()
+    {
+        timer = timerDuration;
+    }
+
+    void UpdateTimer()
+    {
+        if (timer > 0)
+        {
+            timer -= Time.deltaTime;
+        }
+        else
+        {
+            // Timer expired, do something
+            Debug.Log("Timer expired!");
+        }
+    }
 }
-
-
