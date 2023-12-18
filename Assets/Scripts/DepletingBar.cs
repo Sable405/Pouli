@@ -1,34 +1,39 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class DepletingBar : MonoBehaviour
 {
     public float maxBarValue = 100f;
     public float depletionRate = 10f;
     public float currentBarValue;
 
+    public Slider Touch2;
     private bool isCoroutineRunning = false;
 
     void Start()
     {
         currentBarValue = maxBarValue;
+       Touch2 = FindObjectOfType<Slider>();
+        if (Touch2 == null)
+        {
+            Debug.LogError("Slider component not found. Attach this script to a GameObject with a Slider component.");
+        }
+       
     }
 
     void Update()
     {
-       
+         
+        
+        // Uncomment this if you want to deplete the bar continuously
+      Touch2.value = currentBarValue;
 
         if (currentBarValue <= 0 && !isCoroutineRunning)
         {
             StartCoroutine(MyCoroutine());
         }
-    }
-
-    void DepleteBar()
-    {
-        currentBarValue -= depletionRate * Time.deltaTime;
-        currentBarValue = Mathf.Clamp(currentBarValue, 0f, maxBarValue);
+       
     }
 
     IEnumerator MyCoroutine()
@@ -46,24 +51,16 @@ public class DepletingBar : MonoBehaviour
         currentBarValue = maxBarValue; // Reset the bar after coroutine finishes
         isCoroutineRunning = false;
     }
-   
-   private void OnTriggerEnter(Collider other)
-   {
-     if (other.tag == "Arm") // Assuming left mouse button is used for touch
+
+    private void OnTriggerStay(Collider other)
+    {
+      
+        if (other.CompareTag("Arm")) // Assuming "Arm" is the correct tag
         {
-
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit))
-            {
-                if (hit.collider.CompareTag("DepletingBar"))
-                {
-                    DepleteBar();
-                }
-            }
+            currentBarValue -= depletionRate * Time.deltaTime;
+           // Touch2.value = currentBarValue;
+            
         }
-     }
-     }
-
-
+        
+    }
+}
