@@ -2,14 +2,14 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DepletingBar : MonoBehaviour
+public class Health : MonoBehaviour
 {
     public float maxBarValue = 100f;
     public float depletionRate = 10f;
     public float currentBarValue;
-    public Counter counter; // Change 'thinglol' to 'counter'
+ 
 
-    public Slider touch2; // Change 'Touch2' to 'touch2'
+    public Slider touch1; // Change 'Touch2' to 'touch2'
 
     private bool isCoroutineRunning = false;
 
@@ -18,22 +18,17 @@ public class DepletingBar : MonoBehaviour
         currentBarValue = maxBarValue;
 
         // Change 'Touch2' to 'touch2' for consistency
-        touch2 = FindObjectOfType<Slider>();
-        if (touch2 == null)
+        touch1 = FindObjectOfType<Slider>();
+        if (touch1 == null)
         {
             Debug.LogError("Slider component not found. Attach this script to a GameObject with a Slider component.");
         }
 
-        // Change 'Counter' to 'counter' for consistency
-        if (counter == null)
-        {
-            Debug.LogError("Counter is not assigned to DepletingBar script!");
-        }
     }
 
     void Update()
     {
-        touch2.value = currentBarValue;
+        touch1.value = currentBarValue;
 
         if (currentBarValue <= 0 && !isCoroutineRunning)
         {
@@ -83,7 +78,7 @@ public class DepletingBar : MonoBehaviour
 
     private void DestroyEnemy()
     {
-        counter.EnemyDestroyed(); // Call the method from 'counter' script
+      // Call the method from 'counter' script
         // Assuming this script is attached to the enemy object
         Destroy(gameObject);
     }

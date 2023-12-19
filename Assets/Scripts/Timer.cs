@@ -18,7 +18,7 @@ public class Timer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        startTime = Time.time + 61; //Time in seconds to count down from.
+        startTime = Time.time + 80; //Time in seconds to count down from.
     }
 
     // Update is called once per frame
@@ -29,7 +29,7 @@ public class Timer : MonoBehaviour
 
         float t = Time.time - startTime; //Time variable.
         
-        string minutes = ((int) t / 60).ToString();  //Minutes string.
+        string minutes = ((int) -t / 60).ToString();  //Minutes string.
         string seconds = (-t % 60).ToString(format:"f1"); //Seconds string to one decimal place.
 
         timerText.text = minutes + ":" + seconds; //Text object output.
