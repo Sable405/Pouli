@@ -2,24 +2,30 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DepletingBar : MonoBehaviour
+public class Enemy2 : MonoBehaviour
 {
     public float maxBarValue = 100f;
     public float depletionRate = 10f;
     public float currentBarValue;
 
-    public Slider Touch2;
+    public Slider Touch22;
     private bool isCoroutineRunning = false;
 
     public Counter Counter;
 
+ //   private AudioMan2 AudioMan2;
+
     void Start()
     {
+       // AudioMan2 = FindObjectOfType<AudioMan2>();
         currentBarValue = maxBarValue;
-       Touch2 = FindObjectOfType<Slider>();
-        if (Touch2 == null)
+       Touch22 = FindObjectOfType<Slider>();
+        if (Touch22 == null)
         {
             Debug.LogError("Slider component not found. Attach this script to a GameObject with a Slider component.");
+        }
+        else{
+            Touch22.value = currentBarValue;
         }
        
     }
@@ -29,7 +35,7 @@ public class DepletingBar : MonoBehaviour
          
         
         // Uncomment this if you want to deplete the bar continuously
-      Touch2.value = currentBarValue;
+      Touch22.value = currentBarValue;
 
         if (currentBarValue <= 0 && !isCoroutineRunning)
         {
@@ -61,6 +67,7 @@ public class DepletingBar : MonoBehaviour
       
         if (other.CompareTag("Arm")) // Assuming "Arm" is the correct tag
         {
+            
             currentBarValue -= depletionRate * Time.deltaTime;
            // Touch2.value = currentBarValue;
             

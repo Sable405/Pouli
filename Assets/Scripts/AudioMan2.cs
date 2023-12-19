@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AudioManager : MonoBehaviour
+public class AudioMan2 : MonoBehaviour
 {
     public AudioClip enemyTouchSound1;
     public AudioClip enemyTouchSound2;
@@ -21,7 +21,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void PlayEnemyTouchSound()
+    public void PlayEnemyTouchSound2()
     {
         // Check if audioSource is null before attempting to play a sound
         if (audioSource != null)

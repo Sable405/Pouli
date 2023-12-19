@@ -7,23 +7,30 @@ public class Health : MonoBehaviour
     public float maxBarValue = 100f;
     public float depletionRate = 10f;
     public float currentBarValue;
- 
 
-    public Slider touch1; // Change 'Touch2' to 'touch2'
+    public GameObject YouLose;
+    public Slider touch1;
+    public GameObject youWinPanel; // Add a reference to the "You Win" panel
 
     private bool isCoroutineRunning = false;
 
     void Start()
     {
         currentBarValue = maxBarValue;
-
-        // Change 'Touch2' to 'touch2' for consistency
         touch1 = FindObjectOfType<Slider>();
+
         if (touch1 == null)
         {
             Debug.LogError("Slider component not found. Attach this script to a GameObject with a Slider component.");
         }
 
+        // Find and assign the "You Win" panel
+        youWinPanel = GameObject.Find("YouWinPanel"); // Replace "YouWinPanel" with the actual name
+        if (youWinPanel != null)
+        {
+            youWinPanel.SetActive(false); // Deactivate the panel initially
+        }
+         YouLose = GameObject.Find("YouLose");
     }
 
     void Update()
@@ -40,19 +47,32 @@ public class Health : MonoBehaviour
     {
         isCoroutineRunning = true;
 
+                // Unlock the cursor
+        Cursor.lockState = CursorLockMode.None;
+        // Make the cursor visible
+        Cursor.visible = true;
+
         Debug.Log("Coroutine started!");
 
         // Your coroutine logic goes here
 
-        yield return new WaitForSeconds(3f); // Adjust the duration as needed
+        yield return new WaitForSeconds(3f);
 
         Debug.Log("Coroutine finished!");
 
+        // Activate the "You Win" panel
+        if (youWinPanel != null)
+        {
+            youWinPanel.SetActive(true);
+                    // Unlock the cursor
+        Cursor.lockState = CursorLockMode.None;
+        // Make the cursor visible
+        Cursor.visible = true;
+        }
+        YouLose.SetActive(true);
         // Destroy the enemy object
         DestroyEnemy();
 
-        // Increment the counter
-        //   enemyDestroyedCount++;
 
         // Reset the bar after the coroutine finishes
         currentBarValue = maxBarValue;
@@ -67,19 +87,8 @@ public class Health : MonoBehaviour
         }
     }
 
-   // void OnDestroy()
- //   {
-        // Notify the GameController when an enemy is destroyed
-     //   if (counter != null)
-      //  {
-    //        counter.EnemyDestroyed();
-      //  }
-   // }
-
     private void DestroyEnemy()
     {
-      // Call the method from 'counter' script
-        // Assuming this script is attached to the enemy object
         Destroy(gameObject);
     }
 }
